@@ -4,11 +4,13 @@ conversion of the value."""
 
 from . import units
 
-class Property():
+from PyQt6.QtCore import QCoreApplication
+
+class Property:
     """The base class that properties inherit from. It associates a human-readable display name with the data, as well
     as a unit and value type that it casts all inputs to."""
-    def __init__(self, dispName, unit, valueType):
-        self.dispName = dispName
+    def __init__(self, dispName: str, unit, valueType):
+        self.dispName = QCoreApplication.translate('Property', dispName) 
         self.unit = unit
         self.valueType = valueType
         self.value = None
