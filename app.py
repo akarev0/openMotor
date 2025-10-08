@@ -22,6 +22,15 @@ from uilib.logger import logger
 from uilib.fileIO import appVersionStr
 
 
+def resourcePath(relativePath):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relativePath)
+
+
 class App(QApplication):
     def __init__(self, args):
         super().__init__(args)
@@ -32,9 +41,11 @@ class App(QApplication):
             )
         )
 
-        self.translator = QTranslator(self)
-        if self.translator.load("ua", "translations"):
-            self.installTranslator(self.translator)
+        translator = QTranslator()
+        translationsDir = resourcePath("translations")
+        translationsFile = os.path.join(translationsDir, "ua.qm")
+        if translator.load(translationsFile):
+            self.installTranslator(translator)
             print("Український переклад успішно завантажено!")
 
         self.headless = "-h" in args
